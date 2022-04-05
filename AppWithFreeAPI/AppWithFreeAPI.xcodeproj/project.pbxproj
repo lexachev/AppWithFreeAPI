@@ -13,6 +13,10 @@
 		2A10377627FAEDB500D689D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A10377427FAEDB500D689D5 /* Main.storyboard */; };
 		2A10377827FAEDB800D689D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A10377727FAEDB800D689D5 /* Assets.xcassets */; };
 		2A10377B27FAEDB800D689D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A10377927FAEDB800D689D5 /* LaunchScreen.storyboard */; };
+		2A10378527FAEEEB00D689D5 /* AnimeFactAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A10378427FAEEEB00D689D5 /* AnimeFactAPI.swift */; };
+		2A10378727FB7B4700D689D5 /* AnimesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A10378627FB7B4700D689D5 /* AnimesTableViewCell.swift */; };
+		2AD6CA6B27FC26E100251797 /* AnimeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD6CA6A27FC26E100251797 /* AnimeDetailViewController.swift */; };
+		2AD6CA6D27FC35E100251797 /* AnimeFactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AD6CA6C27FC35E100251797 /* AnimeFactsTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,10 @@
 		2A10377727FAEDB800D689D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2A10377A27FAEDB800D689D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2A10377C27FAEDB800D689D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2A10378427FAEEEB00D689D5 /* AnimeFactAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeFactAPI.swift; sourceTree = "<group>"; };
+		2A10378627FB7B4700D689D5 /* AnimesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AnimesTableViewCell.swift; path = Model/AnimesTableViewCell.swift; sourceTree = "<group>"; };
+		2AD6CA6A27FC26E100251797 /* AnimeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeDetailViewController.swift; sourceTree = "<group>"; };
+		2AD6CA6C27FC35E100251797 /* AnimeFactsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimeFactsTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +64,13 @@
 		2A10376D27FAEDB500D689D5 /* AppWithFreeAPI */ = {
 			isa = PBXGroup;
 			children = (
+				2AD6CA6A27FC26E100251797 /* AnimeDetailViewController.swift */,
+				2AD6CA6C27FC35E100251797 /* AnimeFactsTableViewCell.swift */,
+				2A10377227FAEDB500D689D5 /* ViewController.swift */,
+				2A10378627FB7B4700D689D5 /* AnimesTableViewCell.swift */,
 				2A10376E27FAEDB500D689D5 /* AppDelegate.swift */,
 				2A10377027FAEDB500D689D5 /* SceneDelegate.swift */,
-				2A10377227FAEDB500D689D5 /* ViewController.swift */,
+				2A10378427FAEEEB00D689D5 /* AnimeFactAPI.swift */,
 				2A10377427FAEDB500D689D5 /* Main.storyboard */,
 				2A10377727FAEDB800D689D5 /* Assets.xcassets */,
 				2A10377927FAEDB800D689D5 /* LaunchScreen.storyboard */,
@@ -138,9 +150,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AD6CA6B27FC26E100251797 /* AnimeDetailViewController.swift in Sources */,
 				2A10377327FAEDB500D689D5 /* ViewController.swift in Sources */,
 				2A10376F27FAEDB500D689D5 /* AppDelegate.swift in Sources */,
+				2A10378727FB7B4700D689D5 /* AnimesTableViewCell.swift in Sources */,
+				2AD6CA6D27FC35E100251797 /* AnimeFactsTableViewCell.swift in Sources */,
 				2A10377127FAEDB500D689D5 /* SceneDelegate.swift in Sources */,
+				2A10378527FAEEEB00D689D5 /* AnimeFactAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
