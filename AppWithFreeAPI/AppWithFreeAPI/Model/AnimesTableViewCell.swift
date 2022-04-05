@@ -64,7 +64,7 @@ class AnimesTableViewCell: UITableViewCell {
     }
     
     func configure(with viewModel: AnimesTableViewCellViewModel){
-        animeTitleLabel.text = viewModel.name
+        animeTitleLabel.text = viewModel.name.replacingOccurrences(of: "_", with: " ")
         
         if let data = viewModel.imageData {
             animeImageView.image = UIImage(data: data)

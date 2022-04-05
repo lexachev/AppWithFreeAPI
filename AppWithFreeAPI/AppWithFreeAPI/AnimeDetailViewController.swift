@@ -5,7 +5,6 @@
 //  Created by Алексей Каллистов on 05.04.2022.
 //
 
-import Foundation
 import UIKit
 
 class AnimeDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -31,13 +30,11 @@ class AnimeDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = animeName
+        title = (animeName ?? "No name").replacingOccurrences(of: "_", with: " ")
         view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-//        self.tableView.estimatedRowHeight = 80
-//        self.tableView.rowHeight = UITableView.automaticDimension
         AnimeFactAPI.shared.getAnimeFacts(animeName: animeName ?? "") { [weak self] result in
             switch result {
                case .success(let animes):

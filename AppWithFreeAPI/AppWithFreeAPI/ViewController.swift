@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(AnimesTableViewCell.self, forCellReuseIdentifier: AnimesTableViewCell.identifier)
@@ -16,6 +16,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }()
     
     private var viewModels = [AnimesTableViewCellViewModel]()
+    private var filteredViewModels = [AnimesTableViewCellViewModel]()
+    private let searchController = UISearchController(searchResultsController: nil)
+    private var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return false }
+        return text.isEmpty
+    }
+    private var isFiltering: Bool {
+        return searchController.isActive && !searchBarIsEmpty
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +32,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         view.backgroundColor = .systemBackground
         // Do any additional setup after loading the view.
         view.addSubview(tableView)
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         tableView.delegate = self
         tableView.dataSource = self
         AnimeFactAPI.shared.getAnimeList { [weak self] result in
@@ -46,6 +60,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering {
+            return filteredViewModels.count
+        }
         return viewModels.count
     }
     
@@ -57,7 +74,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             fatalError()
         }
         //cell.textLabel?.text = "Something"
-        cell.configure(with: viewModels[indexPath.row])
+        if isFiltering {
+            cell.configure(with: filteredViewModels[indexPath.row])
+        } else {
+            cell.configure(with: viewModels[indexPath.row])
+        }
+        
         return cell
     }
     
@@ -72,9 +94,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AnimeDetailViewController {
-            destination.animeName = viewModels[(tableView.indexPathForSelectedRow?.row)!].name
+            if isFiltering {
+                destination.animeName = filteredViewModels[(tableView.indexPathForSelectedRow?.row)!].name
+            } else {
+                destination.animeName = viewModels[(tableView.indexPathForSelectedRow?.row)!].name
+            }
         }
         tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: true)
     }
+    
+    
 }
 
+extension ViewController {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text! )
+    }
+    
+    private func filterContentForSearchText(_ searchText: String) {
+        filteredViewModels = viewModels.filter({ (anime: AnimesTableViewCellViewModel) -> Bool in
+            return anime.name.lowercased().contains(searchText.lowercased())
+        })
+        
+        tableView.reloadData()
+    }
+}
