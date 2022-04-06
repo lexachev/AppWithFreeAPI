@@ -44,17 +44,11 @@ class AnimesTableViewCell: UITableViewCell {
         animeImageFavoriteView.translatesAutoresizingMaskIntoConstraints = false
         animeImageFavoriteView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         animeImageFavoriteView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        //let origImage = UIImage(named: "fav_star")
-        //let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         let favoriteButton = UIButton(type: .system)
         favoriteButton.frame = CGRect(x:  contentView.frame.size.width, y: 0, width: 30, height: contentView.frame.size.height)
-        //favoriteButton.setTitle("+", for: .normal)
         favoriteButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
-        //favoriteButton.setImage(tintedImage, for: .normal)
-        //favoriteButton.tintColor = UIColor.red
         favoriteButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
         accessoryView = favoriteButton
-        
     }
     
     @objc private func pressed() {
