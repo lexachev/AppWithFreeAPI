@@ -45,7 +45,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Anime List"
-        //view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -93,19 +93,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.accessoryView?.tintColor = .lightGray
         cell.link = self
         if isFiltering {
-           // cell.favoriteButton.setImage(UIImage(systemName: (filteredViewModels[indexPath.row].isFavorite ? "star.fill" : "star")), for: .normal)
             cell.animeImageFavoriteView.image = UIImage(systemName: (filteredViewModels[indexPath.row].isFavorite ? "star.fill" : "star"))
-//            cell.favoriteButton.setTitle("2", for: .normal)
-//            cell.favoriteButton.isSelected = true
-//            cell.favoriteButton.tintColor = .systemBlue
-            //cell.accessoryView?.tintColor = .systemBlue
             cell.configure(with: filteredViewModels[indexPath.row])
         } else {
-//            cell.favoriteButton.setTitle("1", for: .normal)
-//            cell.favoriteButton.isSelected = false
-//            cell.favoriteButton.tintColor = .lightGray
             cell.accessoryView?.tintColor = .lightGray
-            //cell.favoriteButton.setImage(UIImage(systemName: (viewModels[indexPath.row].isFavorite ? "star.fill" : "star")), for: .normal)
             cell.animeImageFavoriteView.image = UIImage(systemName: (viewModels[indexPath.row].isFavorite ? "star.fill" : "star"))
             cell.configure(with: viewModels[indexPath.row])
         }
