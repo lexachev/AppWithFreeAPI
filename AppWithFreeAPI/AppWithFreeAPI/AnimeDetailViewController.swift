@@ -8,8 +8,6 @@
 import UIKit
 
 class AnimeDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-   // @IBOutlet weak var animeDetailLabel: UILabel!
     var animeName: String?
     
     private let tableView: UITableView = {
@@ -66,7 +64,6 @@ class AnimeDetailViewController: UIViewController, UITableViewDelegate, UITableV
         ) as? AnimeFactsTableViewCell else {
             fatalError()
         }
-        //cell.textLabel?.text = "Something"
         cell.configure(with: viewModels[indexPath.row])
         return cell
     }
@@ -78,16 +75,4 @@ class AnimeDetailViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

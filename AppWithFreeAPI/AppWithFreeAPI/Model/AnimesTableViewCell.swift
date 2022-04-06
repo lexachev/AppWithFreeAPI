@@ -12,27 +12,55 @@ class AnimesTableViewCellViewModel {
     let name: String
     let imageUrl: URL?
     var imageData: Data? = nil
+    var isFavorite: Bool = false
     
     init(
         id: Int,
         name: String,
-        imageUrl: URL?
+        imageUrl: URL?,
+        isFavorite: Bool
     ){
         self.id = id
         self.name = name
         self.imageUrl = imageUrl
+        self.isFavorite = isFavorite
     }
 }
 
 class AnimesTableViewCell: UITableViewCell {
     static let identifier = "AnimesTableViewCell"
-    
+    var link: ViewController?
     private let animeTitleLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .systemFont(ofSize: 25, weight: .medium)
         return label
     }()
     
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(animeTitleLabel)
+        contentView.addSubview(animeImageView)
+        contentView.addSubview(animeImageFavoriteView)
+        animeImageFavoriteView.translatesAutoresizingMaskIntoConstraints = false
+        animeImageFavoriteView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
+        animeImageFavoriteView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
+        //let origImage = UIImage(named: "fav_star")
+        //let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        let favoriteButton = UIButton(type: .system)
+        favoriteButton.frame = CGRect(x:  contentView.frame.size.width, y: 0, width: 30, height: 30)
+        favoriteButton.setTitle("+", for: .normal)
+        favoriteButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+        //favoriteButton.setImage(tintedImage, for: .normal)
+        //favoriteButton.tintColor = UIColor.red
+        favoriteButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+        accessoryView = favoriteButton
+        
+    }
+    
+    @objc private func pressed() {
+        link?.makeFavorite(cell: self)
+    }
+
     private let animeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
@@ -41,11 +69,12 @@ class AnimesTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(animeTitleLabel)
-        contentView.addSubview(animeImageView)
-    }
+    var animeImageFavoriteView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
     
     required init?(coder: NSCoder) {
         fatalError()
@@ -53,7 +82,7 @@ class AnimesTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        animeTitleLabel.frame = CGRect(x: 175, y: 0, width: contentView.frame.size.width - 175, height: contentView.frame.size.height)
+        animeTitleLabel.frame = CGRect(x: 160, y: 0, width: contentView.frame.size.width - 175, height: contentView.frame.size.height)
         animeImageView.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
     }
     
@@ -65,7 +94,6 @@ class AnimesTableViewCell: UITableViewCell {
     
     func configure(with viewModel: AnimesTableViewCellViewModel){
         animeTitleLabel.text = viewModel.name.replacingOccurrences(of: "_", with: " ")
-        
         if let data = viewModel.imageData {
             animeImageView.image = UIImage(data: data)
         } else if let url = viewModel.imageUrl {

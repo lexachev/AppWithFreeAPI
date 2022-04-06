@@ -6,6 +6,7 @@
 //
 
 import UIKit
+
 class AnimeFactsTableViewCellViewModel {
     let id: Int
     let fact: String
@@ -25,9 +26,6 @@ class AnimeFactsTableViewCell: UITableViewCell {
     private let animeFactLabel: UITextView = {
        let label = UITextView()
         label.font = .systemFont(ofSize: 16, weight: .regular)
-        //label.numberOfLines = 10
-        //label.numberOfLines = 0
-        //label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     

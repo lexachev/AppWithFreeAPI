@@ -14,7 +14,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         table.register(AnimesTableViewCell.self, forCellReuseIdentifier: AnimesTableViewCell.identifier)
         return table
     }()
-    
     private var viewModels = [AnimesTableViewCellViewModel]()
     private var filteredViewModels = [AnimesTableViewCellViewModel]()
     private let searchController = UISearchController(searchResultsController: nil)
@@ -25,12 +24,28 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     private var isFiltering: Bool {
         return searchController.isActive && !searchBarIsEmpty
     }
+   
+    func makeFavorite(cell: UITableViewCell){
+        guard let indexPathTapped = tableView.indexPath(for: cell) else { return }
+        let anime: AnimesTableViewCellViewModel = (isFiltering ? filteredViewModels : viewModels)[indexPathTapped.row]
+        anime.isFavorite.toggle()
+        let defaults = UserDefaults.standard
+        var favoritesAnime = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
+        if anime.isFavorite {
+            favoritesAnime.append(anime.name)
+        } else {
+            if let index = favoritesAnime.firstIndex(of: anime.name) {
+                favoritesAnime.remove(at: index)
+            }
+        }
+        defaults.set(favoritesAnime, forKey: "SavedStringArray")
+        tableView.reloadRows(at: [indexPathTapped], with: .fade)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Anime List"
-        view.backgroundColor = .systemBackground
-        // Do any additional setup after loading the view.
+        //view.backgroundColor = .systemBackground
         view.addSubview(tableView)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -39,11 +54,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         definesPresentationContext = true
         tableView.delegate = self
         tableView.dataSource = self
+        let defaults = UserDefaults.standard
+        let favoritesAnime = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
         AnimeFactAPI.shared.getAnimeList { [weak self] result in
             switch result {
                case .success(let animes):
                 self?.viewModels = animes.compactMap({
-                    AnimesTableViewCellViewModel(id: $0.anime_id, name: $0.anime_name, imageUrl: URL(string: $0.anime_img ?? ""))
+                    AnimesTableViewCellViewModel(id: $0.anime_id, name: $0.anime_name, imageUrl: URL(string: $0.anime_img ?? ""), isFavorite: (favoritesAnime.contains($0.anime_name)))
                 })
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
@@ -73,18 +90,29 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         ) as? AnimesTableViewCell else {
             fatalError()
         }
-        //cell.textLabel?.text = "Something"
+        cell.accessoryView?.tintColor = .lightGray
+        cell.link = self
         if isFiltering {
+           // cell.favoriteButton.setImage(UIImage(systemName: (filteredViewModels[indexPath.row].isFavorite ? "star.fill" : "star")), for: .normal)
+            cell.animeImageFavoriteView.image = UIImage(systemName: (filteredViewModels[indexPath.row].isFavorite ? "star.fill" : "star"))
+//            cell.favoriteButton.setTitle("2", for: .normal)
+//            cell.favoriteButton.isSelected = true
+//            cell.favoriteButton.tintColor = .systemBlue
+            //cell.accessoryView?.tintColor = .systemBlue
             cell.configure(with: filteredViewModels[indexPath.row])
         } else {
+//            cell.favoriteButton.setTitle("1", for: .normal)
+//            cell.favoriteButton.isSelected = false
+//            cell.favoriteButton.tintColor = .lightGray
+            cell.accessoryView?.tintColor = .lightGray
+            //cell.favoriteButton.setImage(UIImage(systemName: (viewModels[indexPath.row].isFavorite ? "star.fill" : "star")), for: .normal)
+            cell.animeImageFavoriteView.image = UIImage(systemName: (viewModels[indexPath.row].isFavorite ? "star.fill" : "star"))
             cell.configure(with: viewModels[indexPath.row])
         }
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRow(at: indexPath, animated: true)
         performSegue(withIdentifier: "showanimedetail", sender: self)
     }
     
@@ -102,8 +130,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         tableView.deselectRow(at: tableView.indexPathForSelectedRow!, animated: true)
     }
-    
-    
 }
 
 extension ViewController {
@@ -115,7 +141,6 @@ extension ViewController {
         filteredViewModels = viewModels.filter({ (anime: AnimesTableViewCellViewModel) -> Bool in
             return anime.name.lowercased().contains(searchText.lowercased())
         })
-        
         tableView.reloadData()
     }
 }
