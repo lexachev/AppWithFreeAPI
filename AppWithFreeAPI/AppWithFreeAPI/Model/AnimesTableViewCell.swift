@@ -48,7 +48,7 @@ class AnimesTableViewCell: UITableViewCell {
         //let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
         let favoriteButton = UIButton(type: .system)
         favoriteButton.frame = CGRect(x:  contentView.frame.size.width, y: 0, width: 30, height: 30)
-        favoriteButton.setTitle("+", for: .normal)
+        //favoriteButton.setTitle("+", for: .normal)
         favoriteButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
         //favoriteButton.setImage(tintedImage, for: .normal)
         //favoriteButton.tintColor = UIColor.red
